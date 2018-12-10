@@ -29,34 +29,39 @@
           ippon:environment: test
           ippon:owner: Doug
           ippon:customer: Orchestra
+          
+    - name: assure docker is installed
+      apt: name=docker.io state=installed
+
+
+
 
     # - name: Add an apt key by id from a keyserver
     #   apt_key:
     #     keyserver: keyserver.ubuntu.com
     #     id: 9DC858229FC7 DD38 854A E2D8 8D81 803C 0EBF CD88
 
-    - name: Add an Apt signing key, uses whichever key is at the URL
-      apt_key:
-        id: 0EBFCD88
-        url: url=https://download.docker.com/linux/ubuntu/gpg
-        state: present
+    # - name: Add an Apt signing key, uses whichever key is at the URL
+    #   apt_key:
+    #     url: url=https://download.docker.com/linux/ubuntu/gpg
+    #     state: present
 
-    - name: Update repositories cache and install "foo" package
-      apt:
-        name: apt-get
-        update_cache: yes
-      become_method: su
+    # - name: Update repositories cache and install "foo" package
+    #   apt:
+    #     name: apt-get
+    #     update_cache: yes
+    #   become_method: su
 
-    - apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
-        state: present
-      become_method: su
+    # - apt_repository:
+    #     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+    #     state: present
+    #   become_method: su
 
-    - name: assure docker is installed
-      apt: 
-        name: docker.io 
-        state: installed
-      become_method: su
+    # - name: assure docker is installed
+    #   apt: 
+    #     name: docker.io 
+    #     state: installed
+    #   become_method: su
 
     # - name: Run the command if the specified file does not exist.
     #   command: sudo su 
