@@ -1,0 +1,16 @@
+- hosts: ec2hosts
+  name: configuration play
+  user: ubuntu
+  gather_facts: true
+  tasks:
+    - name: assure docker is installed
+      apt: name=docker.io state=installed   
+
+# - hosts: ec2hosts
+#   name: configuration play
+#   user: ubuntu
+#   gather_facts: true
+
+# 	tasks:
+#   	- name: assure docker is installed
+#   	  apt: name=docker.io state=installed    

@@ -1,2 +1,6 @@
 [local]
 localhost
+
+[ec2hosts]
+ec2-52-91-68-96.compute-1.amazonaws.com
+

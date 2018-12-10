@@ -29,9 +29,16 @@
           ippon:environment: test
           ippon:owner: Doug
           ippon:customer: Orchestra
-          
-    - name: assure docker is installed
-      apt: name=docker.io state=installed
+          register: ec2
+
+    - name: Add all instance public IPs to host group
+      add_host: hostname={{ item.public_ip }} groups=ec2hosts
+      loop: "{{ ec2.instances }}"
+
+
+
+    # - name: assure docker is installed
+    #   apt: name=docker.io state=installed
 
 
 
