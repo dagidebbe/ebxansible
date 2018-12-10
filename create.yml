@@ -1,0 +1,136 @@
+- name: Create an EC2 instance
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    instance_type: t2.micro
+    security_group: DougWebDMZ
+    image: ami-0f9cf087c1f27d9b1
+    keypair: ebxdemo
+    region: us-east-1 
+    count: 1
+
+  tasks:
+    - name: Launch instance
+      ec2:
+        key_name: "{{keypair}}"
+        region: "{{ region }}"
+        instance_type: "{{instance_type}}"
+        image: "{{image}}"
+        wait: yes
+        group: "{{security_group}}"
+        count: 1
+        vpc_subnet_id: subnet-bf34ab95
+        assign_public_ip: yes
+        instance_tags:
+          Name: EBXdeployment
+          ippon:project: orchestra cloud
+          ippon:environment: test
+          ippon:owner: Doug
+          ippon:customer: Orchestra
+
+    # - name: Add an apt key by id from a keyserver
+    #   apt_key:
+    #     keyserver: keyserver.ubuntu.com
+    #     id: 9DC858229FC7 DD38 854A E2D8 8D81 803C 0EBF CD88
+
+    - name: Add an Apt signing key, uses whichever key is at the URL
+      apt_key:
+        id: 0EBFCD88
+        url: url=https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Update repositories cache and install "foo" package
+      apt:
+        name: apt-get
+        update_cache: yes
+      become_method: su
+
+    - apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+        state: present
+      become_method: su
+
+    - name: assure docker is installed
+      apt: 
+        name: docker.io 
+        state: installed
+      become_method: su
+
+    # - name: Run the command if the specified file does not exist.
+    #   command: sudo su 
+    #   command: sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #   command: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    #   command: sudo apt-get update
+    #   command: sudo apt-cache policy docker-ce
+    #   command: sudo apt-get install -y docker-ce
+    #   command: sudo git clone https://github.com/mickaelgermemont/aws-tomcat-ebx-postgresql.git
+    #   command: cd aws-tomcat-ebx-postgresql
+    #   command: sudo wget https://jdbc.postgresql.org/download/postgresql-42.2.5.jre6.jar
+    #   command: echo "export EBXLICENSE=3FKAR-TGOVH-6XR3T-DRDWW" >> ~/.profile
+    #   command: source ~/.profile
+    #   command: sudo docker build -t aws-tomcat-ebx-postgresql:0.1 .
+    #   command: sudo docker run --rm -p 9090:8080 --mount type=volume,src=ebx9,dst=/data/app/ebx -e "CATALINA_OPTS=-DebxLicense=$EBXLICENSE" --name ebx9 aws-tomcat-ebx-postgresql:0.1
+
+
+
+
+
+
+
+
+
+    # - hosts: ec2hosts
+    #   name: assure docker is installed
+    #   user: ubuntu
+    #   gather_facts: true
+    #   tasks:
+    #     - name: install docker
+    #       apt: name=docker.io state=installed
+
+    # - name: Add all instance public IPs to host group
+    #   add_host: hostname={{ item.public_ip }} groups=ec2hosts
+    #   loop: "{{ ec2.instances }}"
+
+    # - name: assure docker is installed
+    #   apt: name=docker.io state=installed
+
+      # - name: Provision a set of instances
+      #   hosts: localhost
+      #   # ... AS ABOVE ...
+
+      # - hosts: ec2hosts
+      #   name: configuration play
+      #   user: ec2-user
+      #   gather_facts: true
+
+      #   tasks:
+
+      #      - name: Check NTP service
+      #        service: name=ntpd state=started
+           
+      # - name: assure docker is installed
+      #   apt: name=docker.io state=installed
+
+    # - name: create postgres database
+    #   rds:
+    #     command: create
+    #     db_name: ebx
+    #     db_engine: postgres
+    #     publicly_accessible: yes
+    #     region: "{{region}}"
+    #     multi_zone: no
+    #     security_groups: sg-caa0b9b2
+    #     license_model: postgresql-license
+    #     size: 20
+    #     instance_type: db.t2.micro
+    #     instance_name: EBXdeployment
+    #     username: ebx
+    #     password: ebxebxebxdemo
+    #     tags:
+    #       ippon:project: orchestra cloud
+    #       ippon:environment: test
+    #       ippon:owner: Doug
+    #       ippon:customer: Orchestra
+          
