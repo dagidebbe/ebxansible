@@ -4,7 +4,10 @@
   gather_facts: true
   tasks:
     - name: assure docker is installed
-      apt: name=docker.io state=installed   
+      apt: 
+        name: docker.io 
+        state: installed
+        update_cache: yes   
 
 # - hosts: ec2hosts
 #   name: configuration play
